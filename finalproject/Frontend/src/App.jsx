@@ -1,41 +1,30 @@
-import React,{useState,useEffect} from 'react'
-import axios from 'axios';
-import Productform from './components/Productform';
-import Producttable from './components/Producttable';
-
+import React from 'react'
+import { BrowserRouter,Routes,Route } from 'react-router-dom'
+import Navbardata from './components/Navbardata'
+import Register from './components/Register'
+import Login from './components/Login'
+import Privateroute from './utils/Privateroute'
+import Home from './components/Home'
+import About from './components/About'
+import Contact from './components/Contact'
 
 const App = () => {
-  const API  = "http://localhost:6800/api/products";
-  //api data store
-  const[products,setProducts] = useState([]);
-
-  //fetch data
-  useEffect(()=>{
-  loadproducts();
-  },[]);
-
-  //load product
-   const loadproducts = async()=>{
-    const res = await axios.get(API);
-    setProducts(res.data);
-   }
-
-   //add product
-
-    const addproduct = async(data)=>{
-    await axios.post(API,data);
-    loadproducts();
-   };
 
   return <>
-  <div className='container-fluid mt-4'>
-    <h3 className='text-center'>Product add and details</h3>
-    <Productform addProduct={addproduct}/>
-    <hr/>
-    <Producttable products={products}/>
-  </div>
- 
+  <BrowserRouter>
+  <Navbardata/>
+  <Routes>
+  <Route path='/' element={<Register/>}></Route>
+  <Route path='/login' element={<Login/>}></Route>
+  <Route element={<Privateroute/>}>
+      <Route path='/home' element={<Home/>}></Route>
+       <Route path='/about' element={<About/>}></Route>
+        <Route path='/contact' element={<Contact/>}></Route>
+  </Route>
 
+  </Routes>
+  </BrowserRouter>
+  
   </>
 }
 
